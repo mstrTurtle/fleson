@@ -23,7 +23,7 @@
    // 【适配Bison的关键代码，不要修改】
    // 匹配成功时触发。更新location。
 
-   #define yyterminate() return( token::END )
+   #define yyterminate() return( token::FILE_END )
    // 不然默认会返回一个NULL
 
 
@@ -41,6 +41,13 @@
 %option noyywrap
 %option c++
 
+letter      [A-Za-z]
+digit       [0-9]
+identifier  {letter}({letter}|{digit})*
+integer     {digit}+
+blank       [\t ]
+const_char  '[^\']*'
+
 %%
 
 %{          /** 这段代码被放在yylex函数体最前面 **/
@@ -48,16 +55,74 @@
             // 【适配Bison的关键代码，不要修改】
 %}
 
-[a-zA-Z]+   {
-               yylval->build<std::string>( yytext );
-               return( token::WORD );
-            }
 
 
-\n          {
-               loc->lines(); // Update line number
-            }
+and {return token::AND;}
+array {return token::ARRAY;}
+begin {return token::BEGIN_token;}
+bool {return token::BOOL;}
+call {return token::CALL;}
+case {return token::CASE;}
+char {return token::CHAR;}
+constant {return token::CONSTANT;}
+dim {return token::DIM;}
+do {return token::DO;}
+else {return token::ELSE;}
+end {return token::END;}
+false {return token::FALSE;}
+for {return token::FOR;}
+if {return token::IF;}
+input {return token::INPUT;}
+integer {return token::INTEGER;}
+not {return token::NOT;}
+of {return token::OF;}
+or {return token::OR;}
+output {return token::OUTPUT;}
+procedure {return token::PROCEDURE;}
+program {return token::PROGRAM;}
+read {return token::READ;}
+real {return token::REAL;}
+repeat {return token::REPEAT;}
+set {return token::SET;}
+stop {return token::STOP;}
+then {return token::THEN;}
+to {return token::TO;}
+true {return token::TRUE;}
+until {return token::UNTIL;}
+var {return token::VAR;}
+while {return token::WHILE;}
+write {return token::WRITE;}
 
-.           {  return( token::CHAR );
-            }
+\( {return token::L_BRACKET;}
+\) {return token::R_BRACKET;}
+\* {return token::STAR;}
+\*\/ {return token::R_COMMENT;}
+\+ {return token::PLUS;}
+\, {return token::COMMA;}
+\- {return token::MINUS;}
+\. {return token::DOT;}
+".." {return token::DOUBLE_DOT;}
+"/" {return token::SLASH;}
+"/*" {return token::L_COMMENT;}
+":" {return token::COLON;}
+":=" {return token::ASSIGN;}
+";" {return token::SEMICOLON;}
+"<" {return token::LT;}
+"<=" {return token::LE;}
+"<>" {return token::NE;}
+"=" {return token::EQ;}
+">" {return token::GT;}
+">=" {return token::GE;}
+"[" {return token::L_INDEX;}
+"]" {return token::R_INDEX;}
+
+{identifier}    {yylval->build<std::string>( yytext );return token::ID;}
+{integer}       {yylval->build<std::string>( yytext );return token::NUM;}
+{const_char}    {yylval->build<std::string>( yytext );return token::CONST_CHAR;}
+{blank}         {}
+\n              {loc->lines();}
+.               { }
+
+
+
 %%

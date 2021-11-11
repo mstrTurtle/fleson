@@ -50,15 +50,76 @@
 %define api.value.type variant
 %define parse.assert
 
-%token               END    0     "end of file"
-%token <std::string> WORD
-%token               CHAR
+%token               FILE_END    0     "end of file"
+%token <std::string> ID
+%token <std::string> NUM
+%token <std::string> CONST_CHAR
+
+
+%token AND
+%token ARRAY
+%token BEGIN_token
+%token BOOL
+%token CALL
+%token CASE
+%token CHAR
+%token CONSTANT
+%token DIM
+%token DO
+%token ELSE
+%token END
+%token FALSE
+%token FOR
+%token IF
+%token INPUT
+%token INTEGER
+%token NOT
+%token OF
+%token OR
+%token OUTPUT
+%token PROCEDURE
+%token PROGRAM
+%token READ
+%token REAL
+%token REPEAT
+%token SET
+%token STOP
+%token THEN
+%token TO
+%token TRUE
+%token UNTIL
+%token VAR
+%token WHILE
+%token WRITE
+%token L_BRACKET
+%token R_BRACKET
+%token STAR
+%token R_COMMENT
+%token PLUS
+%token COMMA
+%token MINUS
+%token DOT
+%token DOUBLE_DOT
+%token SLASH
+%token L_COMMENT
+%token COLON
+%token ASSIGN
+%token SEMICOLON
+%token LT
+%token LE
+%token NE
+%token EQ
+%token GT
+%token GE
+%token L_INDEX
+%token R_INDEX
+
 
 %locations
 
 %%
 
-list_option : END | list END;
+list_option : FILE_END | list FILE_END;
 
 list
   : item
@@ -66,8 +127,7 @@ list
   ;
 
 item
-  :  WORD    { driver.add_word( $1 ); }
-  |  CHAR    { /*do nothing*/       ; }
+  :  ID    { /*driver.add_word( $1 );*/ std::cout << "ID: " << $1 << std::endl;}
   ;
 
 %%
