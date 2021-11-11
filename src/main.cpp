@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
-#include <cassert>
 
 #include "tm_driver.h"
 

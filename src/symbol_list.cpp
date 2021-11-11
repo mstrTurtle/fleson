@@ -1,46 +1,53 @@
 #include "symbol_list.h"
 #include <cassert>
 
-using namespace std;
+#ifdef TEST
+#include <iostream>
+#define PRINT(str) std::cout << str << std::endl
+#endif
+
 namespace turtle{
 
-using cstr_t = const char*;
-using sl_t = map<string,int>;
-
-#define M_INSERT(map,key,value) map.insert(pair<string,int>(key,value))
+#define M_INSERT(map,key,value) map.insert(si_pair{key,value})
 #define V_INSERT(vec,element) vec.emplace_back(element)
 
-const string keywords[] = {
+
+
+vector<string> keywords = {
     "and","array","begin","bool","call","case","char","constant","dim","do",
     "else","end","false","for","if","input","integer","not","of","or",
     "output","procedure","program","read","real","repeat","set","stop","then","to",
     "true","until","var","while","write"};
-const string symbols[] = {
+vector<string> symbols = {
     "(",")","*","*/","+",",","-",".","..","/",
     "/*",":",":=",";","<","<=","<>","=",">",">=",
     "[","]"};
 const int start_keywords = 1;
 const int start_symbols = 39;
-const int size_keywords = sizeof(keywords)/sizeof(char*);
-const int size_symbols = sizeof(symbols)/sizeof(char*);
+const int size_keywords = keywords.size();
+const int size_symbols = symbols.size();
 const int id_ID = 36;
 const int id_CONST_STR = 38;
 
 
 SymbolList::SymbolList(){
-    for(int i = 0; i<size_keywords;i++){
-        M_INSERT(m_,keywords[i],start_keywords+i);
+    kw_ = set<string>{keywords.begin(),keywords.end()};
+    int no;
+    no = start_keywords;
+    for(auto kw:keywords){
+        m_.insert(si_pair{kw,no});
+        no++;
     }
-    for(int i = 0; i<size_symbols;i++){
-        M_INSERT(m_,symbols[i],start_symbols+i);
+    no = start_symbols;
+    for(auto sym:symbols){
+        m_.insert(si_pair{sym,no});
+        no++;
     }
-
 }
 void SymbolList::insert(string key, int value){
+    M_INSERT(m_,key,value);
     if(value == id_ID || value == id_CONST_STR){
         vl_.insert(key);
-    }else{
-        M_INSERT(m_,key,value);
     }
 }
 bool SymbolList::has(string key){
@@ -51,14 +58,14 @@ int SymbolList::get_value(string key){
     if(it == m_.end()) return -1;
     else return it->second;
 }
-pair<int,int> SymbolList::get_pair(string str){
+token_t SymbolList::get_pair(string str){
     const int NONE = 0;
     int value = get_value(str);
-    if(value == -1) return pair<int,int>(-1,NONE);
+    if(value == -1) return token_t{-1,NONE};
     if(value == id_ID || value == id_CONST_STR){
-        return pair<int,int>(value,vl_.pos(str));
+        return token_t{value,vl_.pos(str)+1};
     }else{
-        return pair<int,int>(value,NONE);
+        return token_t{value,NONE};
     }
 }
 
@@ -80,10 +87,26 @@ void sl_test(){
     sl.insert("b",id_ID);
     sl.insert("hello",id_CONST_STR);
     sl.insert("world",id_CONST_STR);
-    assert(sl.get_pair("a") == (pair<int,int>(id_ID,1)));
-    assert(sl.get_pair("b") == (pair<int,int>(id_ID,2)));
-    assert(sl.get_pair("hello") == (pair<int,int>(id_CONST_STR,3)));
-    assert(sl.get_pair("world") == (pair<int,int>(id_CONST_STR,4)));
+
+    PRINT("sl.get_pair(\"a\").first: ");
+    PRINT(sl.get_pair("a").first);
+    PRINT("sl.get_pair(\"a\").second: ");
+    PRINT(sl.get_pair("a").second);
+
+    assert(sl.get_pair("a") == (token_t(id_ID,1)));
+    assert(sl.get_pair("b") == (token_t(id_ID,2)));
+    assert(sl.get_pair("hello") == (token_t(id_CONST_STR,3)));
+    assert(sl.get_pair("world") == (token_t(id_CONST_STR,4)));
 }
 
 }
+
+// use these commands below for test:
+// $ g++ -g symbol_list.cpp -o sl -DTEST
+// $ ./sl
+#ifdef TEST
+int main(){
+    turtle::sl_test();
+    return 0;
+}
+#endif

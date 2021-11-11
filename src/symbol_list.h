@@ -3,20 +3,16 @@
 #include <vector>
 #include <string>
 #include <cstring>
+#include <set>
 
 namespace turtle{
 
-class SymbolList{
-  public:
-    SymbolList();
-    void insert(string key, int value);
-    bool has(string key);
-    int get_value(string key);
-    pair<int,int> get_pair(string str);
-  private:
-    sl_t m_;
-    VList vl_;
-};
+using namespace std;
+
+using cstr_t = const char*;
+using si_map = map<string,int>;
+using token_t = pair<int,int>;
+using si_pair = pair<string,int>;
 
 class VList{
   public:
@@ -27,5 +23,19 @@ class VList{
     map<string,int> m_;
     int n_ = 0;
 };
+
+class SymbolList{
+  public:
+    SymbolList();
+    void insert(string key, int value);
+    bool has(string key);
+    int get_value(string key);
+    token_t get_pair(string str);
+  private:
+    si_map m_;
+    set<string> kw_;
+    VList vl_;
+};
+
 
 }
