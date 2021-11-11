@@ -9,7 +9,8 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "TEST"
             ],
             "compilerPath": "C:\\TDM-GCC-64\\bin\\gcc.exe",
             "cStandard": "gnu17",
