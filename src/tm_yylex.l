@@ -46,7 +46,7 @@ digit       [0-9]
 identifier  {letter}({letter}|{digit})*
 integer     {digit}+
 blank       [\t ]
-const_char  '[^\']*'
+char_literal  '[^\']*'
 
 %%
 
@@ -116,9 +116,11 @@ write {return token::WRITE;}
 "[" {return token::L_INDEX;}
 "]" {return token::R_INDEX;}
 
+"'" {return token::SINGLE_QUOT_MARK;}
+
 {identifier}    {yylval->build<std::string>( yytext );return token::ID;}
 {integer}       {yylval->build<std::string>( yytext );return token::NUM;}
-{const_char}    {yylval->build<std::string>( yytext );return token::CONST_CHAR;}
+{char_literal}    {yylval->build<std::string>( yytext );return token::CHAR_LITERAL;}
 {blank}         {}
 \n              {loc->lines();}
 .               { }

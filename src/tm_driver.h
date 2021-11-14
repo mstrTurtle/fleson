@@ -4,6 +4,10 @@
 #include <cstddef>
 #include <istream>
 
+
+#include "quad.h"
+#include "var.h"
+
 #include "tm_lexer.h"
 #include "tm_parser.tab.hh"
 
@@ -22,6 +26,11 @@ public:
 
    std::ostream& print_info(std::ostream &stream);
 
+   turtle::quad_slice code;
+   turtle::var_slice vars;
+   turtle::var_gener new_temp;
+
+   string next_instr(){return to_string(code.v_.size());}
 private:
    void parse_helper(std::istream &&stream);
 

@@ -9,7 +9,6 @@ namespace turtle{
 
 using namespace std;
 
-using cstr_t = const char*;
 using si_map = map<string,int>;
 using token_t = pair<int,int>;
 using si_pair = pair<string,int>;

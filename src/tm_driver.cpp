@@ -37,7 +37,11 @@ void Driver::parse_helper(std::istream &&is) {
 void Driver::add_word(const std::string& word) {n_word++;}
 
 std::ostream& Driver::print_info( std::ostream &stream ) {
-   stream << red  << "Results: " << norm << "\n";
-   stream << blue << "Total Words: " << norm << n_word << "\n";
+   stream << red  << "QUAD CODE: " << "\n";
+   int count = 0;
+   for(auto q:code.v_){
+      stream << blue << "(" << count++ << ") ";
+      stream << norm << q->gen_quad() << "\n";
+   }
    return(stream);
 }

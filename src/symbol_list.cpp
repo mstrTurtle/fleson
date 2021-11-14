@@ -1,5 +1,6 @@
 #include "symbol_list.h"
 #include <cassert>
+#include <memory>
 
 #ifdef TEST
 #include <iostream>
@@ -92,6 +93,11 @@ void sl_test(){
     PRINT(sl.get_pair("a").first);
     PRINT("sl.get_pair(\"a\").second: ");
     PRINT(sl.get_pair("a").second);
+
+    assert(sl.has("a"));
+    assert(sl.has("b"));
+    assert(sl.has("hello"));
+    assert(sl.has("world"));
 
     assert(sl.get_pair("a") == (token_t(id_ID,1)));
     assert(sl.get_pair("b") == (token_t(id_ID,2)));

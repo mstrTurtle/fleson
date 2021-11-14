@@ -1,4 +1,4 @@
-CXX = g++
+CXX = clang++
 CXXFLAGS = -g -O -Wall
 
 TOPDIR := $(PWD)
@@ -9,7 +9,7 @@ BIN := $(BINDIR)/main
 SRC := $(wildcard $(SRCDIR)/*.cpp)
 OBJS := fish.o main.o
 
-CXXSTD := --std=c++11
+CXXSTD := --std=c++14
 
 export CXX CXXFLAGS CXXSTD OBJS SRCDIR OBJDIR
 
