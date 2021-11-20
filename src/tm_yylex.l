@@ -95,7 +95,7 @@ write {return token::WRITE;}
 
 \( {return token::L_BRACKET;}
 \) {return token::R_BRACKET;}
-\* {return token::STAR;}
+\* {return token::ASTERISK;}
 \*\/ {return token::R_COMMENT;}
 \+ {return token::PLUS;}
 \, {return token::COMMA;}
@@ -116,7 +116,7 @@ write {return token::WRITE;}
 "[" {return token::L_INDEX;}
 "]" {return token::R_INDEX;}
 
-"'" {return token::SINGLE_QUOT_MARK;}
+"'" {return token::SINGLE_QUOT;}
 
 {identifier}    {yylval->build<std::string>( yytext );return token::ID;}
 {integer}       {yylval->build<std::string>( yytext );return token::NUM;}

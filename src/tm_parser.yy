@@ -1,6 +1,6 @@
 %skeleton "lalr1.cc"
 %require  "3.0"
-%debug
+%define parse.trace
 %defines
 %define api.namespace {turtle}
 %define api.parser.class {Parser}
@@ -56,71 +56,17 @@
 %define api.value.type variant
 %define parse.assert
 
-%token               FILE_END    0     "end of file"
+%token               FILE_END    0     "end of file" 
 %token <std::string> ID
 %token <std::string> NUM
 %token <std::string> CHAR_LITERAL
 
-
-%token AND
-%token ARRAY
-%token BEGIN_token
-%token BOOL
-%token CALL
-%token CASE
-%token CHAR
-%token CONSTANT
-%token DIM
-%token DO
-%token ELSE
-%token END
-%token FALSE
-%token FOR
-%token IF
-%token INPUT
-%token INTEGER
-%token NOT
-%token OF
-%token OR
-%token OUTPUT
-%token PROCEDURE
-%token PROGRAM
-%token READ
-%token REAL
-%token REPEAT
-%token SET
-%token STOP
-%token THEN
-%token TO
-%token TRUE
-%token UNTIL
-%token VAR
-%token WHILE
-%token WRITE
-%token L_BRACKET
-%token R_BRACKET
-%token STAR
-%token R_COMMENT
-%token PLUS
-%token COMMA
-%token MINUS
-%token DOT
-%token DOUBLE_DOT
-%token SLASH
-%token L_COMMENT
-%token COLON
-%token ASSIGN
-%token SEMICOLON
-%token LT
-%token LE
-%token NE
-%token EQ
-%token GT
-%token GE
-%token L_INDEX
-%token R_INDEX
-
-%token SINGLE_QUOT_MARK;
+%token AND    ARRAY     BEGIN_token   BOOL        CALL    CASE      CHAR      CONSTANT    DIM       DO
+%token ELSE   END       FALSE         FOR         IF      INPUT     INTEGER   NOT         OF        OR
+%token OUTPUT PROCEDURE PROGRAM       READ        REAL    REPEAT    SET       STOP        THEN      TO
+%token TRUE   UNTIL     VAR           WHILE       WRITE   L_BRACKET R_BRACKET ASTERISK    R_COMMENT PLUS
+%token COMMA  MINUS     DOT           DOUBLE_DOT  SLASH   L_COMMENT COLON     ASSIGN      SEMICOLON LT
+%token LE     NE        EQ            GT          GE      L_INDEX   R_INDEX   SINGLE_QUOT
 
 %nterm <bool_node> bool_expr
 %nterm <bool_node> bool_term
@@ -288,7 +234,7 @@ math_expr
   ;
 
 term
-  : term STAR factor {
+  : term ASTERISK factor {
     auto t = driver.new_temp();
     GEN("*",$1.var,$3.var,t);
     $$.var = t;
@@ -414,7 +360,7 @@ void turtle::Parser::error( const location_type &l, const std::string &err_messa
 }
 
 // useless
-// singleword : PLUS | MINUS | STAR | SLASH | EQ | LT | GT | L_BRACKET | R_BRACKET | L_INDEX | R_INDEX | COLON | DOT | SEMICOLON | COMMA | SINGLE_QUOT_MARK ;
+// singleword : PLUS | MINUS | ASTERISK | SLASH | EQ | LT | GT | L_BRACKET | R_BRACKET | L_INDEX | R_INDEX | COLON | DOT | SEMICOLON | COMMA | SINGLE_QUOT ;
 
 // expr : math_expr | bool_expr | char_expr ;
 
