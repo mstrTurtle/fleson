@@ -4,11 +4,11 @@
 
 Well well well. My friend.
 
-This is Yet Another Homework of Compiler Course(So it calls YAHCC).
+This is Yet Another Homework of Compiler Course(So it calls YAHCC:fearful:).
 
 To learn how it works, and what it is used for, straightly read CMakeLists.txt and demo.sh.
 
-Lots of Template Meta Programming Skill used in slice.h, and I'm sure you'll have fun ;)
+Lots of Template Meta Programming Skill used in slice.h, and I'm sure you'll have fun:joy_cat:
 
 ## Compile
 
