@@ -1,4 +1,4 @@
 echo "===DEMO 1==="
-./bin/main ./demo/demo1.txt
+./build/bin/fleson ./demo/demo1.txt
 echo "===DEMO 2==="
-./bin/main ./demo/demo2.txt
+./build/bin/fleson ./demo/demo2.txt
