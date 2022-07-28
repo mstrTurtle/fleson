@@ -1,3 +1,72 @@
+/*
+
+=== Original Idea ===
+
+Slice is a container somewhat like:
+
+template<typename T>
+using slice = std::vector<shared_ptr<T>>;
+
+However, I wrote a quite complex one,
+due to my naive thought half year ago.
+
+With different T, slice<T> could have some
+"accompany method". 
+
+=== Detailed Description ===
+
+DECLARE_SLICE_METHOD_NAME_FOR(method, T): 
+    Add a check in "struct slice_method",
+    which ensure that slice<T> ownes `method`.
+
+XX_SLICE_METHOD:
+    Add a function in T, which is to be called by
+    slice<T>'s corresponding `method`. See 
+    `USE_METHOD` for detail.
+
+USE_METHOD(method):
+    Add a `auto method(auto arg...)` in slice<T>.
+    The `method` is used to `forward` the
+    calling of slice<T>::method to T::method,
+    which could be briefly descriped as:
+    slice<T>::method(args...) = 
+        T::method(slice<T>::this, args...);
+    Also due to my naiveness, I implement
+    the T::method quite verbose.
+
+=== Reconsidered Design ===
+
+Now half year past, I reconsidered the
+proper design, which could be:
+
+```cpp
+template<typename T>
+using slice_base = std::vector<shared_ptr<T>>;
+
+template<typename T>
+class slice<T> : slice_base<T>{
+}
+
+class slice<var>{
+    bool has(std::string const& str){
+        auto v = (slice_base<T>)(*this);
+        return std::ranges::any_of(
+            v,
+            [&str = std::as_const(str)]
+                (std::string const& s){
+                    return s == str;
+                }
+        );
+    }
+}
+
+(Partial Specializing Other Method Here...)
+```
+
+Now it seems pretty good.
+
+*/
+
 #pragma once
 #include <vector>
 #include <memory>
