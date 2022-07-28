@@ -40,27 +40,39 @@ Now half year past, I reconsidered the
 proper design, which could be:
 
 ```cpp
-template<typename T>
-using slice_base = std::vector<shared_ptr<T>>;
+#include <ranges>
+#include <utility>
+#include <vector>
+#include <algorithm>
+
+struct var {
+    std::vector<std::string> vars;
+};
 
 template<typename T>
-class slice<T> : slice_base<T>{
-}
+class slice_base : public std::vector<T> {
+public:
+    using vec_t = std::vector<T>;
+    using base_t = slice_base<T>;
+};
 
-class slice<var>{
-    bool has(std::string const& str){
-        auto v = (slice_base<T>)(*this);
+template<typename T>
+class slice : public slice_base<T> {
+};
+
+class slice<var> : public slice_base<var> {
+    bool has(var const& vv) {
+        auto v = (vec_t)(*this);
         return std::ranges::any_of(
             v,
-            [&str = std::as_const(str)]
-                (std::string const& s){
-                    return s == str;
+            [&vv = std::as_const(vv)]
+                (var const& var){
+                    return &vv == &var;
                 }
         );
     }
-}
+};
 
-(Partial Specializing Other Method Here...)
 ```
 
 Now it seems pretty good.
